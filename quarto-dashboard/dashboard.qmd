@@ -19,7 +19,7 @@ library(ggplot2)
 #| label: load-data
 #| message: false
 
-cake_data_raw <- read.csv("../2024_final_scores.tsv", sep = "\t", header = T)
+cake_data_raw <- read.csv("../data/2024_final_scores.tsv", sep = "\t", header = T)
 ```
 
 ```{r}
