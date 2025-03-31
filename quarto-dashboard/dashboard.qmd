@@ -232,6 +232,6 @@ global_cakes <-
 ## Row {height="50%"}
 
 ```{r}
-#| title: 
+#| title: data
 
 ```
