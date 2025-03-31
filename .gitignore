@@ -22,10 +22,7 @@ _freeze
 docs
 
 # Release directories 
-2204/
-2210/
-2304/
-2505/
+results/
 old_rmd_files/
 specky/
 test_files/
