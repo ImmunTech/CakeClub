@@ -2,7 +2,9 @@
 title: "Immunotechnology Cake Club"
 format: 
   dashboard: 
-    nav-buttons: [github]
+    nav-buttons: 
+    - github
+    github: https://github.com/mine-cetinkaya-rundel/olympicdash
     logo: ../images/cake-emoji.png
 ---
 
