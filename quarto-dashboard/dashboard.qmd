@@ -1,0 +1,184 @@
+---
+title: "Immunotechnology Cake Club"
+format: 
+  dashboard: 
+    nav-buttons: 
+    - github
+    github: https://github.com/mine-cetinkaya-rundel/olympicdash
+    logo: ../images/cake-emoji.png
+---
+
+```{r}
+#| label: load-packages
+#| message: false
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+#| label: load-data
+#| message: false
+
+cake_data_raw <- read.csv("../2024_final_scores.tsv", sep = "\t", header = T)
+```
+
+```{r}
+#| label: prep-data
+#| message: false
+
+cake_data <- 
+    cake_data_raw %>%
+    mutate(month = format(as.Date(Date, format = "%Y-%m-%d"), "%m"))
+
+n_cake <- nrow(cake_data)
+```
+
+```{r}
+#| label: cake origin country
+#| message: false
+swedish_yes <- 
+    cake_data %>%
+    filter(Nationality_of_the_cake == "Swedish") %>%
+    count(Cake)
+
+n_swedish <- nrow(swedish_yes)
+
+swedish_no <- 
+    cake_data %>%
+    filter(Nationality_of_the_cake != "Swedish") %>%
+    count(Cake)
+
+n_world <- nrow(swedish_no)
+```
+
+## Row {height="20%"}
+```{r}
+#| content: valuebox
+#| title: "Cakes"
+
+list(
+  icon = "cake",
+  color = "#DDC3E3",
+  value = n_cake
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Swedish cakes"
+
+list(
+  icon = "cake-fill",
+  color = "#F7E5B7",
+  value = n_swedish
+)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Global cakes"
+
+list(
+  icon = "cake-fill",
+  color = "#CBD3AD",
+  value = n_world
+)
+```
+
+## Row {height="40%"}
+### Column {width="40%"}
+```{r}
+#| title: How much does your job title matter in baking?
+
+cake_data %>%
+    ggplot(aes(x = Job_group, y = Score)) +
+    geom_boxplot(fill = "#DBD9DA", alpha = 0.7) +
+    theme_minimal() +
+    theme_bw() + 
+    labs(x = "Job Title", y = "Score") + 
+    theme(axis.text = element_text(size = 20),
+    axis.text.x = element_text(size = 20, angle = 45, hjust = 1.0), 
+    axis.title = element_text(size = 20),
+    legend.text = element_text(size = 20), 
+    legend.title = element_text(size = 20))
+```
+
+### Column {width="40%"}
+```{r}
+#| title: Who bakes better?
+
+cake_data %>%
+    ggplot(aes(x = Gender, y = Score, fill = Gender)) +
+    geom_boxplot() +
+    theme_minimal() +
+    theme_bw() + 
+    scale_fill_manual(values = c("#F5E8E1", "#D0BBA8")) + 
+    labs(x = "Gender", y = "Score") + 
+    theme(axis.text = element_text(size = 20),
+    axis.title = element_text(size = 20),
+    legend.text = element_text(size = 20), 
+    legend.title = element_text(size = 20))
+```
+
+## Column 
+```{r}
+#| title: How does outdoor temperature influence final score?
+cake_data %>%
+    ggplot(aes(x = Temperature, y = Score)) +
+    geom_line( color="darkgrey") +
+    geom_point(shape=21, color="black", fill="#DBD9DA", size=6) + 
+    theme_bw() + 
+    theme(axis.text = element_text(size = 20),
+    axis.title = element_text(size = 20),
+    legend.text = element_text(size = 20), 
+    legend.title = element_text(size = 20))
+```
+
+### Row - Tabsets of tables {height=70% .tabset}
+::: {.card title="Cheesecakes"}
+🧀 sorted in descending order of total score.
+
+```{r}
+#| label: prepare cheesecakes
+
+cheesecake_yes <- 
+    cake_data %>%
+    filter(Cheesecake == "yes")
+
+cheesecake_yes %>%
+  select(Cake, Score) %>%
+  arrange(desc(Score))
+```
+:::
+
+::: {.card title="Berry cakes"}
+🍓🫐 sorted in ascending order of total score.
+
+```{r}
+#| label: Berry cakes
+
+berries_yes <- 
+    cake_data %>%
+    filter(Berries == "yes")
+
+berries_yes %>%
+  select(Cake, Score) %>%
+  arrange(Score)
+```
+:::
+
+::: {.card title="Chocolate cakes"}
+🍫 sorted in descending order of total score.
+
+```{r}
+#| label: Chocolate cakes
+
+choco_yes <- 
+    cake_data %>%
+    filter(Chocolate == "yes")
+
+choco_yes %>%
+  select(Cake, Score) %>%
+  arrange(desc(Score))
+```
+:::
