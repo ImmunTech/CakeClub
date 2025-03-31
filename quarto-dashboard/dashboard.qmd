@@ -18,7 +18,7 @@ library(leaflet)
 #| label: load-data
 #| message: false
 
-cake_data_raw <- read.csv("../2024_final_scores.tsv", sep = "\t", header = T)
+cake_data_raw <- read.csv("../data/2024_final_scores.tsv", sep = "\t", header = T)
 ```
 
 ```{r}
@@ -218,7 +218,7 @@ choco_yes %>%
 
 # Global cakes 🌍
 
-## Row {height="40%"}
+## Row {height="50%"}
 
 ```{r}
 #| title: Global cakes
@@ -229,9 +229,9 @@ global_cakes <-
 
 ```
 
-## Row {height="60%"}
+## Row {height="50%"}
 
 ```{r}
-#| title: Data
+#| title: 
 
 ```
