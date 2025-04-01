@@ -24,7 +24,7 @@ execute:
 
 ::: {.large}
 
-[2024](quarto-dashboard/dashboard.html)
+[2024](quarto-dashboard/ICC_dashboard.html)
 
 :::
 

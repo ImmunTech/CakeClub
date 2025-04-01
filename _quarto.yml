@@ -66,6 +66,11 @@ format:
     fig-align: left
     chalkboard: true
     callout-icon: true
+  dashboard:
+    logo: assets/images/cake-emoji.png
+    nav-buttons: 
+    - icon: github
+      href: https://github.com/ImmunTech/CakeClub
       
 csl: apa.csl
 
