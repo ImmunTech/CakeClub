@@ -30,42 +30,6 @@ website:
 format:
   html:
     quarto-required: ">=1.4.0"
-    smooth-scroll: true
-    toc: true
-    toc-depth: 4
-    toc-location: right
-    number-sections: true
-    number-depth: 4
-    code-fold: false
-    code-tools: false
-    code-copy: true
-    code-overflow: wrap
-    df-print: paged
-    standalone: false
-    fig-align: left
-    callout-icon: true
-    date:  last-modified
-    date-format: "DD-MMM-YYYY"
-    lightbox: auto
-  revealjs:
-    quarto-required: ">=1.4.0"
-    theme: ["default","assets/css/slides.scss"]
-    df-print: paged
-    width: 1280
-    height: 720
-    transition: "fade"
-    transition-speed: "fast"
-    smaller: false
-    incremental: false
-    scrollable: false
-    slide-level: 2
-    slide-number: true
-    progress: true
-    date:  last-modified
-    date-format: "DD-MMM-YYYY"
-    fig-align: left
-    chalkboard: true
-    callout-icon: true
       
 csl: apa.csl
 
