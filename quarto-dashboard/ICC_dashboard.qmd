@@ -3,10 +3,6 @@ title: "Immunotechnology Cake Club"
 format: 
   dashboard: 
     logo: ../assets/images/cake-emoji.png
-    nav-buttons: 
-    - icon: github
-      href: https://github.com/ImmunTech/CakeClub
-theme: minty
 ---
 
 ```{r}
