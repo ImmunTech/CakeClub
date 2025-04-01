@@ -1,14 +1,12 @@
 ---
 title: "Immunotechnology Cake Club"
-format: dashboard
+format: 
+  dashboard: 
+    logo: ../images/cake-emoji.png
+    nav-buttons: 
+    - icon: github
+      href: https://github.com/ImmunTech/CakeClub
 theme: minty
-include-before-body: 
-  text: |
-    <style>
-      #quarto-dashboard-header {
-        display: none
-      }
-    </style>
 ---
 
 ```{r}
