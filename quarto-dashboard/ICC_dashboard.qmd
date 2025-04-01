@@ -172,7 +172,7 @@ berries_yes <-
 
 berries_yes %>%
   select(Cake, Score) %>%
-    arrange(Score) %>%
+    arrange(desc(Score)) %>%
     gt() %>%
     fmt_number(
         columns = Score,
@@ -180,7 +180,7 @@ berries_yes %>%
     ) %>%
     tab_header(
         title = md("**Berry Cakes**"),
-        subtitle = "Sorted by ascending score"
+        subtitle = "Sorted by descending score"
     ) %>%
     cols_label(
         Cake = md("**Cake**"),
@@ -271,7 +271,7 @@ global_cakes %>%
 
 ### Row - Card {height=20%}{width="20%"}
 ::: {.card title="Basque cheese cake"}
-![](../images/Baker17.png){width="100%"}
+![](../assets/images/2024/Baker17.png){width="100%"}
 :::
 
 ## Column - Global cakes without 🍫🧀🍓🫐 {.tabset}
