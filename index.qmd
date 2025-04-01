@@ -20,7 +20,7 @@ execute:
 ::: {.home-grid-child-left}
 
 ### ICC 
-## Immnunotech Cake Club
+## Immunotech Cake Club
 
 ::: {.large}
 

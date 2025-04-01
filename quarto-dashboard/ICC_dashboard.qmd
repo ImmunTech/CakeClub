@@ -2,7 +2,7 @@
 title: "Immunotechnology Cake Club"
 format: 
   dashboard: 
-    logo: ../images/cake-emoji.png
+    logo: ../assets/images/cake-emoji.png
     nav-buttons: 
     - icon: github
       href: https://github.com/ImmunTech/CakeClub
