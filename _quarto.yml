@@ -2,15 +2,6 @@ project:
   type: website
   # output directory used on gh-pages branch. format: YYMM
   output-dir: "results"
-  render: 
-    - "!README.md"
-    - "!LICENSE"
-    - "!LICENSE.md"
-    - "!scripts"
-    - "!tmprepo"
-    - "!*.Rmd"
-    - "!*.md"
-    - "*.qmd"
 
 website:
   favicon: "assets/images/cake_icon.png"
@@ -30,19 +21,6 @@ website:
 format:
   html:
     quarto-required: ">=1.4.0"
-      
-csl: apa.csl
-
-knitr:
-  opts_chunk:
-    results: hold
-
-execute:
-  eval: true
-  echo: true
-  warning: false
-  message: false
-  freeze: true
 
 filters:
   - assets/custom.lua
