@@ -215,6 +215,86 @@ choco_yes %>%
 ```
 :::
 
+# Swedish cakes
+
+## Row {height=50%}
+
+```{r}
+#| label: prepare swedish cakes
+
+swedish_cakes <- 
+    cake_data %>%
+    filter(Nationality_of_the_cake == "Swedish")
+
+swedish_cakes_max <- 
+    swedish_cakes %>%
+    filter(Score == max(Score)) %>%
+    mutate(Score = round(Score, 1))
+
+max_swe_baker <- swedish_cakes_max$Who
+max_swe_cake <- swedish_cakes_max$Cake
+max_swe_score <- swedish_cakes_max$Score
+```
+
+```{r}
+#| title: Summary
+
+swedish_cakes %>%
+    select(Who, Cake, Score) %>%
+    arrange(desc(Score)) %>%
+    gt() %>%
+    fmt_number(
+        columns = Score,
+        decimals = 1
+    ) %>%
+    tab_header(
+        title = md("**Swedish Cakes**"),
+        subtitle = "Best swedish cake?"
+    ) %>%
+    cols_label(
+        Who = md("**Baker**"),
+        Cake = md("**Cake**"),
+        Score = md("**Score**")
+    )
+```
+
+### Row - Value boxes {height=10%}{width="20%"}
+
+::: {.valuebox icon="award" color="#E7C484"}
+`{r} max_swe_baker`
+
+`{r} max_swe_cake `
+
+`{r} max_swe_score `
+:::
+
+### Row - Card {height=20%}{width="20%"}
+::: {.card title="Apple pie with vanilla ice cream"}
+![](../assets/images/2024/Baker6.png){width="100%"}
+:::
+
+## Column - Swedish cakes without 🍫🧀🍓🫐 {.tabset}
+
+```{r}
+#| title: Plot 1
+
+swedish_cakes_other <- 
+    swedish_cakes %>% 
+    filter(Chocolate == "no" & Berries == "no" & Cheesecake == "no")
+
+swedish_cakes_other %>%
+    ggplot(aes(x = Who, y = Cake, color = Job_group)) +
+    geom_point(size = 4) +
+    theme_minimal() +
+    theme(axis.text = element_text(size = 12),
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          axis.title = element_text(size = 14),
+          legend.text = element_text(size = 12),
+          legend.title = element_text(size = 14)) +
+    labs(x = "Baker", y = "Cake", color = "Job Title") + 
+    scale_color_manual(values = c("#F9B288", "#D8BEE5"))
+```
+
 # International cakes
 
 ## Row {height=50%}
