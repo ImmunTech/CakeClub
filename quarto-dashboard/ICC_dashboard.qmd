@@ -11,6 +11,7 @@ format:
 library(dplyr)
 library(ggplot2)
 library(gt)
+library(plotly)
 ```
 
 ```{r}
@@ -119,18 +120,21 @@ cake_data %>%
     legend.title = element_text(size = 20))
 ```
 
-## Column 
+## Row 
 ```{r}
 #| title: How does outdoor temperature influence final score?
-cake_data %>%
+plot_temp <- 
+    cake_data %>%
     ggplot(aes(x = Temperature, y = Score)) +
     geom_line( color="darkgrey") +
-    geom_point(shape=21, color="black", fill="#DBD9DA", size=6) + 
+    geom_point(shape=21, color="black", fill="#DBD9DA", size=4) + 
     theme_bw() + 
-    theme(axis.text = element_text(size = 20),
-    axis.title = element_text(size = 20),
-    legend.text = element_text(size = 20), 
-    legend.title = element_text(size = 20))
+    theme(axis.text = element_text(size = 10),
+    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 10), 
+    legend.title = element_text(size = 10))
+
+ggplotly(plot_temp)
 ```
 
 ### Row - Tabsets of tables {height=70% .tabset}
@@ -218,7 +222,6 @@ choco_yes %>%
 # Swedish cakes
 
 ## Row {height=50%}
-
 ```{r}
 #| label: prepare swedish cakes
 
@@ -274,7 +277,6 @@ swedish_cakes %>%
 :::
 
 ## Column - Swedish cakes without 🍫🧀🍓🫐 {.tabset}
-
 ```{r}
 #| title: Plot 1
 
@@ -298,7 +300,6 @@ swedish_cakes_other %>%
 # International cakes
 
 ## Row {height=50%}
-
 ```{r}
 #| label: prepare international cakes
 
@@ -354,7 +355,6 @@ global_cakes %>%
 :::
 
 ## Column - International cakes without 🍫🧀🍓🫐 {.tabset}
-
 ```{r}
 #| title: Plot 1
 
