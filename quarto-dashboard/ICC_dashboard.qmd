@@ -1,5 +1,6 @@
 ---
 title: "Immunotechnology Cake Club"
+navbar: false
 format: 
   dashboard: 
     logo: ../assets/images/cake-emoji.png

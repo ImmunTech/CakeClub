@@ -15,7 +15,7 @@ website:
     border: false
     left: "{{< meta current_year >}} [NBIS](https://nbis.se) | [GPL-3 License](https://choosealicense.com/licenses/gpl-3.0/)"
     right: "Published with [Quarto](https://quarto.org/) v{{< meta quarto_version >}}"
-  site-url: "https://nbisweden.github.io/workshop-data-visualization-r/2505/"
+  site-url: "https://nbisweden.github.io/CakeClub/results/"
   open-graph: true
 
 format:

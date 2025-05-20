@@ -5,8 +5,8 @@ on:
       - main
 env:
   REGISTRY: ghcr.io
-  ORG: nbisweden
-  IMAGE: workshop-adv-data-viz:latest
+  ORG: immuntech
+  IMAGE: cakeclub:latest
 
 jobs:
   quarto-render-job:
