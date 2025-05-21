@@ -24,7 +24,28 @@ execute:
 
 ::: {.large}
 
-[2024](quarto-dashboard/ICC_dashboard.html)
+[2024 results](quarto-dashboard/ICC_dashboard.html)
+
+:::
+
+::: {}
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+library(toastui)
+library(dplyr)
+my_calendar_data <- read.table("./data/schedule_V2025.csv", header = T, sep = ',')
+
+calendar(navigation = TRUE, defaultDate = Sys.Date()) %>%
+  cal_schedules(my_calendar_data) %>%
+  cal_month_options(
+    startDayOfWeek  = 1, 
+    narrowWeekend = TRUE
+  ) %>% 
+  cal_props(cal_demo_props())
+```
 
 :::
 
