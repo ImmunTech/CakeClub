@@ -15,7 +15,7 @@ calendarId,title,body,start,end,category,backgroundColor,color,borderColor
 "14","Johanna","cake","2025-05-07","2025-05-07","allday",blue,white,black
 "15","Fabian","cake","2025-05-14","2025-05-14","allday",blue,white,black
 "16","Lokesh","cake","2025-05-21","2025-05-21","allday",blue,white,black
-"17","Katja","cake","2025-05-28","2025-05-28","allday",blue,white,black
+"17","Cancelled","no_cake","2025-05-28","2025-05-28","allday",red,white,black
 "18","Christina","cake","2025-06-04","2025-06-04","allday",blue,white,black
 "19","Kristi","cake","2025-06-11","2025-06-11","allday",blue,white,black
 "20","Kristina","cake","2025-06-18","2025-06-18","allday",blue,white,black
