@@ -20,14 +20,16 @@ execute:
 ::: {.home-grid-child-left}
 
 ### ICC 
-## Immunotech Cake Club
+## Results
 
 ::: {.large}
 
-[2024 results](quarto-dashboard/ICC_dashboard.html)
+[Season I (H-2024)](quarto-dashboard/ICC_dashboard.html)
+[Season II (V-2025) *Coming soon*]()
 
 :::
 
+## Schedule
 ::: {}
 
 ```{r}
