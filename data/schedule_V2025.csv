@@ -20,7 +20,7 @@ calendarId,title,body,start,end,category,backgroundColor,color,borderColor
 "19","Cancelled","no_cake","2025-06-11","2025-06-11","allday",red,white,black
 "20","Kristina","cake","2025-06-18","2025-06-18","allday",blue,white,black
 "21","ICC_awards","presentation","2025-06-25","2025-06-25","allday",green,white,black
-"22","Eirini","cake","2025-09-10","2025-09-19","allday",blue,white,black
+"22","Eirini","cake","2025-09-10","2025-09-10","allday",blue,white,black
 "23","Edu","cake","2025-09-17","2025-09-17","allday",blue,white,black
 "24","Johannes","cake","2025-09-24","2025-09-24","allday",blue,white,black
 "25","Angelica","cake","2025-10-01","2025-10-01","allday",blue,white,black
