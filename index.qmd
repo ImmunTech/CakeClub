@@ -38,7 +38,7 @@ execute:
 #| echo: false
 library(toastui)
 library(dplyr)
-my_calendar_data <- read.table("./data/schedule_V2025.csv", header = T, sep = ',')
+my_calendar_data <- read.table("./data/schedule.csv", header = T, sep = ',')
 
 calendar(navigation = TRUE, defaultDate = Sys.Date()) %>%
   cal_schedules(my_calendar_data) %>%
