@@ -274,7 +274,7 @@ swedish_cakes %>%
 
 ### Row - Card {height=20%}{width="20%"}
 ::: {.card title="Apple pie with vanilla ice cream"}
-![](../assets/images/2024/Baker6.png){width="100%"}
+![](../assets/images/2024/Baker12.png){width="100%"}
 :::
 
 ## Column - Swedish cakes without 🍫🧀🍓🫐 {.tabset}
