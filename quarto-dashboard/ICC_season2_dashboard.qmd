@@ -1,0 +1,58 @@
+---
+title: "Immunotechnology Cake Club"
+navbar: false
+format: 
+  dashboard: 
+    logo: ../assets/images/cake-emoji.png
+server: shiny
+---
+
+```{r}
+#| context: setup
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(plotly)
+library(ggthemes)
+library(scales)
+library(bslib)
+library(bsicons)
+
+cake_data_raw <- read.csv("../data/2025/scores_sheet_season_2.tsv", sep = "\t", header = T)
+```
+
+```{r}
+#| label: prepare data
+
+cake_data_filt <- cake_data_raw %>%
+    mutate(cake_type = 
+            ifelse(Chocolate == "yes" & Berries == "no" & Cheesecake == "no", "chocolate",
+                ifelse(Berries == "yes" & Chocolate == "no" & Cheesecake == "no", "berries",
+                    ifelse(Cheesecake == "yes" & Chocolate == "no" & Berries == "no", "cheesecake", NA))))
+```
+
+# {.sidebar}
+```{r}
+#| label: sidebar
+
+selectizeInput(
+    inputId = "cake_type",
+    label = "Select a cake type:",
+    multiple = TRUE,
+    choices = c("Cheesecake" = "cheesecake", "Chocolate" = "chocolate", "Berries" = "berries", "Other" = "NA"),
+    options = list(plugins = "remove_button")
+)
+
+radioButtons(
+    inputId = "Gender",
+    label = "Select gender",
+    choices = c("Female" = "Female", "Male" = "Male")
+)
+
+sliderInput('Temperature', 'Air temperature [°C]',
+            min = 0,
+            max = 25,
+            value = 10,
+            step = 1, sep = "")
+```
+
