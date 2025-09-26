@@ -24,7 +24,7 @@ execute:
 
 ::: {.large}
 
- - [Season I (H-2024)](quarto-dashboard/ICC_dashboard.html)
+ - [Season I (H-2024)](quarto-dashboard/ICC_season1_dashboard.html)
  - Season II (V-2025) *Coming soon*
 
 :::
