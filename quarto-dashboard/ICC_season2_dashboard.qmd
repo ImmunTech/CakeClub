@@ -15,10 +15,9 @@ library(ggplot2)
 library(plotly)
 library(ggthemes)
 library(scales)
-library(bslib)
-library(bsicons)
+library(leaflet)
 
-cake_data_raw <- read.csv("../data/2025/scores_sheet_season_2.tsv", sep = "\t", header = T)
+cake_data_raw <- read.csv("../data/scores_sheet_season_2_with_coords.tsv", sep = "\t", header = T)
 ```
 
 ```{r}
@@ -26,9 +25,55 @@ cake_data_raw <- read.csv("../data/2025/scores_sheet_season_2.tsv", sep = "\t", 
 
 cake_data_filt <- cake_data_raw %>%
     mutate(cake_type = 
-            ifelse(Chocolate == "yes" & Berries == "no" & Cheesecake == "no", "chocolate",
-                ifelse(Berries == "yes" & Chocolate == "no" & Cheesecake == "no", "berries",
-                    ifelse(Cheesecake == "yes" & Chocolate == "no" & Berries == "no", "cheesecake", NA))))
+            ifelse(Chocolate == "yes" & Berries == "no" & Cheesecake == "no", "Chocolate",
+                ifelse(Berries == "yes" & Chocolate == "no" & Cheesecake == "no", "Berries",
+                    ifelse(Cheesecake == "yes" & Chocolate == "no" & Berries == "no", "Cheesecake", "Other"))))
+
+n_tot_cake <- nrow(cake_data_filt)
+
+female_cake <- cake_data_filt %>%
+                filter(Gender == "Female") %>% 
+                nrow()
+
+male_cake <- cake_data_filt %>%
+                filter(Gender == "Male") %>% 
+                nrow()
+
+n_cheesecake <- cake_data_filt %>%
+                filter(cake_type == "Cheesecake") %>% 
+                nrow()
+
+n_chocolate <- cake_data_filt %>%
+                filter(cake_type == "Chocolate") %>% 
+                nrow()
+
+n_berries <- cake_data_filt %>%
+                filter(cake_type == "Berries") %>% 
+                nrow()
+
+n_other_cake <- cake_data_filt %>%
+                filter(cake_type == "Other") %>% 
+                nrow()
+
+average_score <- cake_data_filt %>%
+    summarise(avg = round(mean(Score, na.rm = TRUE), 1)) %>%
+    pull(avg)
+
+average_participation <- cake_data_filt %>%
+    summarise(avg = round(mean(Participation, na.rm = TRUE), 0)) %>%
+    pull(avg)
+
+first <- cake_data_filt %>%
+    filter(Cake == "Lemon Cheesecake") %>%
+    pull(Cake)
+
+second <- cake_data_filt %>%
+    filter(Cake == "cheesecake") %>%
+    pull(Cake)
+
+third <- cake_data_filt %>%
+    filter(Cake == "Nutella Semifreddo") %>%
+    pull(Cake)
 ```
 
 # {.sidebar}
@@ -36,23 +81,321 @@ cake_data_filt <- cake_data_raw %>%
 #| label: sidebar
 
 selectizeInput(
-    inputId = "cake_type",
-    label = "Select a cake type:",
+    inputId = "Job_group",
+    label = "Select a job title:",
     multiple = TRUE,
-    choices = c("Cheesecake" = "cheesecake", "Chocolate" = "chocolate", "Berries" = "berries", "Other" = "NA"),
+    choices = c("NBIS", "PhD student", "Student" , "Teaching assistant"),
+    selected = "Teaching assistant",
     options = list(plugins = "remove_button")
 )
-
-radioButtons(
-    inputId = "Gender",
-    label = "Select gender",
-    choices = c("Female" = "Female", "Male" = "Male")
-)
-
-sliderInput('Temperature', 'Air temperature [°C]',
-            min = 0,
-            max = 25,
-            value = 10,
-            step = 1, sep = "")
 ```
 
+```{r}
+#| context: server
+
+cake_data_filt <- cake_data_raw %>%
+    mutate(cake_type = 
+            ifelse(Chocolate == "yes" & Berries == "no" & Cheesecake == "no", "Chocolate",
+                ifelse(Berries == "yes" & Chocolate == "no" & Cheesecake == "no", "Berries",
+                    ifelse(Cheesecake == "yes" & Chocolate == "no" & Berries == "no", "Cheesecake", "Other"))))
+
+cake_data_clean <- cake_data_filt %>%
+    mutate(Job_group = ifelse(Job_group == "TA", "Teaching assistant", Job_group))
+
+cake_data_clean$cake_type <- factor(cake_data_clean$cake_type, levels = c("Berries", "Cheesecake", "Chocolate", "Other"))
+
+selected_data <- reactive({
+    req(input$Job_group)
+    cake_data_clean %>%
+        filter(
+            Job_group %in% input$Job_group
+        )
+})
+
+plot1 <- reactive({
+    ggplot(selected_data(), aes(x = Job_group, y = Score)) +
+        geom_violin(alpha = 0.7, trim = FALSE) +
+        geom_jitter(shape=16, position=position_jitter(0.2)) +
+        theme_bw() +
+        labs(x = "Job title", y = "Score") +
+        theme(
+            axis.text = element_text(size = 20),
+            axis.text.x = element_text(size = 20, angle = 45, hjust = 1.0),
+            axis.title = element_text(size = 20),
+            legend.position = "none"
+        )
+})
+
+output$score_vs_job_group <- renderPlot({
+    plot1()
+})
+
+plot2 <- reactive({
+    ggplot(selected_data(), aes(x = Gender, y = Score, fill = Gender)) +
+        geom_boxplot(alpha = 0.7) +
+        theme_bw() +
+        scale_fill_manual(values = c("Female" = "#e3ddc3", "Male" = "#c3e3dd")) +
+        labs(x = "Gender", y = "Score") +
+        theme(
+            axis.text = element_text(size = 25),
+            axis.title = element_text(size = 20),
+            legend.text = element_text(size = 20),
+            legend.title = element_text(size = 20)
+        )
+})
+
+output$score_vs_gender <- renderPlot({
+    plot2()
+})
+
+plot3 <- reactive({
+    selected_data() %>%
+        group_by(Job_group, Gender) %>%
+        summarise(count = n(), .groups = "drop") %>%
+        ggplot(aes(x = Job_group, y = count, fill = Gender)) +
+            geom_bar(stat = "identity", position = position_dodge()) +
+            theme_bw() +
+            labs(x = "Job title", y = "Number of bakers", fill = "Gender") +
+            scale_fill_manual(values = c("Female" = "#e3ddc3", "Male" = "#c3e3dd")) +
+            theme(
+                axis.text = element_text(size = 20),
+                axis.text.x = element_text(size = 20, angle = 45, hjust = 1.0),
+                axis.title = element_text(size = 20),
+                legend.text = element_text(size = 20),
+                legend.title = element_text(size = 20)
+            )
+})
+
+output$bakers_by_job_gender <- renderPlot({
+    plot3()
+})
+
+plot4 <- reactive({
+    selected_data() %>%
+        group_by(Job_group, cake_type) %>%
+        summarise(count = n(), .groups = "drop") %>%
+        ggplot(aes(x = Job_group, y = count, fill = cake_type)) +
+            geom_bar(stat = "identity", position = position_dodge()) +
+            scale_fill_manual(
+                values = c("Berries" = "#C94C4C", "Cheesecake" = "#F5E8E1", "Chocolate" = "#ae7549ff", "Other" = "#b0aaaaff"),
+                labels = c("Berries", "Cheesecake", "Chocolate", "Other")
+            ) +
+            labs(x = "Job title", y = "Number of cakes", fill = "Cake type") +
+            theme_bw() +
+            theme(
+                axis.text = element_text(size = 20),
+                axis.text.x = element_text(size = 20, angle = 45, hjust = 1.0),
+                axis.title = element_text(size = 20),
+                legend.text = element_text(size = 20),
+                legend.title = element_text(size = 20)
+            )
+})
+
+output$cake_type_pie <- renderPlot({
+    plot4()
+})
+
+output$table <- renderDataTable({
+    selected_data() %>%
+      select(
+        Who,
+        Cake,
+        Gender,
+        Nationality_of_the_cake,
+        Score
+      )
+})
+
+plot5 <- reactive({
+    ggplot(selected_data(), aes(x = cake_type, y = Score, fill = cake_type)) +
+        geom_boxplot(alpha = 0.7) +
+        theme_bw() +
+        labs(x = "Cake type", y = "Score", fill = "Cake type") +
+        scale_fill_manual(values = c("Berries" = "#C94C4C", "Cheesecake" = "#F5E8E1", "Chocolate" = "#ae7549ff", "Other" = "#b0aaaaff"), labels = c("Berries", "Cheesecake", "Chocolate", "Other")) +
+        theme(
+            axis.text = element_text(size = 20),
+            axis.text.x = element_text(size = 20, angle = 45, hjust = 1.0),
+            axis.title = element_text(size = 20),
+            legend.text = element_text(size = 20),
+            legend.title = element_text(size = 20)
+        )
+})
+
+output$score_vs_temp <- renderPlot({
+    plot5()
+})
+
+icons_list <- makeAwesomeIcon(
+  icon = 'birthday-cake',
+  iconColor = 'white',
+  library = 'fa',
+  markerColor = "purple"
+)
+
+output$map1 <- renderLeaflet({ 
+    leaflet(selected_data()) %>%
+      addTiles() %>% 
+      addAwesomeMarkers(
+        lng = ~Longitude_average, lat = ~Latitude_average, popup = ~Nationality_of_the_cake, icon=icons_list) %>%
+      addMiniMap(width = 150, height = 150)
+})
+```
+
+# Overview
+## Row {height="20%"}
+```{r}
+#| content: valuebox
+#| title: "Total number of cakes"
+
+list(
+  icon = "cake2",
+  color = "#DDC3E3",
+  value = n_tot_cake)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Average cake score"
+
+list(
+  icon = "cake2-fill",
+  color = "#c9e3c3",
+  value = average_score)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Average participation"
+
+list(
+  icon = "calendar-week",
+  color = "#c3c9e3",
+  value = average_participation)
+```
+
+## Row {height="80%"}
+```{r}
+#| title: Plot
+
+plotOutput("score_vs_job_group")
+```
+
+# Bakers
+## Row {height="20%"}
+```{r}
+#| content: valuebox
+#| title: "Female participation"
+
+list(
+  icon = "person-standing-dress",
+  color = "#e3ddc3",
+  value = female_cake)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Male participation"
+
+list(
+  icon = "person-standing",
+  color = "#c3e3dd",
+  value = male_cake)
+```
+
+## Row {height="80%"}
+```{r}
+#| title: Plot
+
+plotOutput("score_vs_gender")
+```
+
+```{r}
+#| title: Plot
+
+plotOutput("bakers_by_job_gender")
+```
+
+# Cake types
+## Row {height="20%"}
+```{r}
+#| content: valuebox
+#| title: "Number of different cake types"
+
+list(
+  icon = "list-ol",
+  color = "#ffd4a9",
+  value = "4")
+```
+
+```{r}
+#| content: valuebox
+#| title: "Berry cakes"
+
+list(
+  icon = "cake2-fill",
+  color = "#C94C4C",
+  value = n_berries)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Cheesecakes"
+
+list(
+  icon = "cake2",
+  color = "#F5E8E1",
+  value = n_cheesecake)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Chocolate cakes"
+
+list(
+    icon = "cake2-fill",
+    color = "#ae7549ff",
+    value = n_chocolate)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Other cakes"
+
+list(
+    icon = "cake2",
+    color = "#b0aaaaff",
+    value = n_other_cake)
+```
+
+## Row {height="80%"}
+```{r}
+#| title: Plot
+
+plotOutput("cake_type_pie")
+```
+
+```{r}
+#| title: Plot
+
+plotOutput("score_vs_temp")
+```
+
+# Top 3 
+::: {.card title="1.place: Lemon Cheesecake"}
+![](../assets/images/2025/Baker_8){width="100%"}
+:::
+
+::: {.card title="2.place: Cheesecake"}
+![](../assets/images/2025/Baker_17){width="100%"}
+:::
+
+::: {.card title="3.place: Nutella Semifreddo"}
+![](../assets/images/2025/Baker_13){width="100%"}
+:::
+
+# Geography 
+```{r}
+#| title: Map
+
+leafletOutput('map1') 
+```
