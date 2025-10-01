@@ -17,7 +17,7 @@ library(ggthemes)
 library(scales)
 library(leaflet)
 
-cake_data_raw <- read.csv("../data/scores_sheet_season_2_with_coords.tsv", sep = "\t", header = T)
+cake_data_raw <- read.csv("../data/2025/scores_sheet_season_2_with_coords.tsv", sep = "\t", header = T)
 ```
 
 ```{r}
@@ -221,7 +221,7 @@ plot5 <- reactive({
         )
 })
 
-output$score_vs_temp <- renderPlot({
+output$score_vs_type <- renderPlot({
     plot5()
 })
 
@@ -377,7 +377,7 @@ plotOutput("cake_type_pie")
 ```{r}
 #| title: Plot
 
-plotOutput("score_vs_temp")
+plotOutput("score_vs_type")
 ```
 
 # Top 3 
