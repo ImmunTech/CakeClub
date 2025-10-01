@@ -20,6 +20,7 @@ slides/**/*_files
 labs/**/*_files
 _freeze
 docs
+.devcontainer.json
 
 # Release directories 
 results/
