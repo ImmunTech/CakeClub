@@ -6,5 +6,7 @@ LABEL org.opencontainers.image.source="https://github.com/ImmunTech/CakeClub"
 # Install dependencies
 RUN Rscript -e 'install.packages("toastui", dependencies = TRUE, repos = "http://cran.us.r-project.org")'
 
+RUN Rscript -e 'install.packages("bsicons", dependencies = TRUE, repos = "http://cran.us.r-project.org")'
+
 WORKDIR /qmd
 CMD ["quarto", "render"]
